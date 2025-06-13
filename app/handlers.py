@@ -1,17 +1,21 @@
 from aiogram import F, Router
 from aiogram.filters import CommandStart
 import aiohttp
-from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
+from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery, ReplyKeyboardMarkup, \
+    KeyboardButton
 
-import bot.app.keyboard as kb
 
 router = Router()
+
+main = ReplyKeyboardMarkup(keyboard=[
+    [KeyboardButton(text='Все заказы')]
+], resize_keyboard=True)
 
 
 @router.message(CommandStart())
 async def start(message):
     chat_id = message.chat.id
-    await message.answer(f'Hello! {chat_id}', reply_markup=kb.main)
+    await message.answer(f'Hello! {chat_id}', reply_markup=main)
 
 
 @router.message(F.text == 'Все заказы')
@@ -38,7 +42,8 @@ async def show_orders(message: Message):
                     )
                     for item in order["items"]:
                         product_name = f"ID {item['product']}"
-                        async with session.get(f"https://kvesy.pythonanywhere.com/api/product/{item['product']}/") as prod_resp:
+                        async with session.get(
+                                f"https://kvesy.pythonanywhere.com/api/product/{item['product']}/") as prod_resp:
                             if prod_resp.status == 200:
                                 product_data = await prod_resp.json()
                                 product_name = product_data.get("name", product_name)

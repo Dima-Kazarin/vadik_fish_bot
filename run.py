@@ -1,11 +1,6 @@
 import asyncio
 from aiogram import Bot, Dispatcher
-from aiogram.client.default import DefaultBotProperties
-from aiogram.client.session.aiohttp import AiohttpSession
-from aiogram.enums import ParseMode
-from aiohttp import web
 from app.handlers import router
-from webhook import setup_webhook_app
 
 TOKEN = '8190188550:AAE_Y4jwVLJqPlFh58BcB7Vg9KR05rJlO3Y'
 
